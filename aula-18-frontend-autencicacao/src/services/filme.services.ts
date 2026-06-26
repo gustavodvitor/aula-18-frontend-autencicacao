@@ -53,14 +53,19 @@ export async function createFilmes(filme: CreateFilmeDTO): Promise<void>
     }
 }
 
-export async function updateFilme(id: number, dados: Partial<Filme>) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/filmes/${id}`, {
+export async function updateFilme(id: number, dados: UpdateFilmeDTO): Promise<void> {
+  const res = await fetch(`${API_URL}/filmes/${id}`, {
     method: "PUT",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+    },
     credentials: "include",
     body: JSON.stringify(dados),
   });
-  return res.json();
+
+  if (!res.ok) {
+    throw new Error("Erro ao atualizar filme");
+  }
 }
 
 export async function deleteFilme(id: number) {
